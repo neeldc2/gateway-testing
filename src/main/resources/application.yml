@@ -1,0 +1,32 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: security-no-gateway
+          uri: http://localhost:8120/
+          predicates:
+            - Path=/api/website-1/**
+          filters:
+            - JwtValidation
+            - RemoveRequestHeader=Authorization
+
+        - id: website-2
+          uri: http://localhost:8100/
+          predicates:
+            - Path=/**
+
+        - id: website-3
+          uri: http://localhost:8120/
+          predicates:
+            - Path=/api/website-3/**
+          filters:
+            - StripPrefix=1
+            - RemoveRequestHeader=Authorization
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.netty: DEBUG
+    redisratelimiter: DEBUG
