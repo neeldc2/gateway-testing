@@ -9,6 +9,7 @@ spring:
           filters:
             - JwtValidation
             - RemoveRequestHeader=Authorization
+            - RemoveRequestHeader=x-service
 
         - id: website-2
           uri: http://localhost:8100/
